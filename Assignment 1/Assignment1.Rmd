@@ -1,0 +1,55 @@
+---
+title: "Assignment1"
+author: "Colin Wick"
+date: "1/23/2021"
+output: html_document
+---
+
+## Part 1: Personal Statement
+
+### Past
+
+As any human being, I have a sense about myself that any particular thread from my childhood could be plausibly pulled forward through various circumstances to created a combinatorically significant number of portraits of a man. All of which would be representative and honest, but none of which would capture the internal experience at the time or as they are experienced right now. This is the presiding issue when trying to capture a coherent narrative of life in a comprehensive way. The alternative, of course, is to tailor the portrait to a percieved audience's goals and impose bounds on the problem and provide a useful charicature the audience.
+
+With that being said, the most salient points in my life right now are some combination of an egalitarian ethic, a symbolic understanding of the world, and a strong desire for a wide social network.
+
+On one side of my family there are conservative Irish and German Catholics that arrived in the United States in the mid-1800s and settled in Wisconsin. The other side of my family is a long line of middle-class Protestant government workers that lived in the Montgomery County, Maryland region seemingly since the 1600s. I don't know the ways that this plays a role in my life in an active sense, but given my position in life now, it seems that these social bases of my existence are exerting some influence on my life currently. I percieve myself to have a strong moral conviction and a public mindedness that I can see in my family on both sides. There's something useful to me about acknoledging a tradition that I am rooted in. A set of social conventions and experiences of life that have been aggregated in a way that I can draw advice or information from.
+
+I consider the downtown part of Annapolis to be the incubator for my social skills and awareness. My Catholic high school was 30 minutes from my house and drew from an equally large radius around it, so seeing people from school could entail drives of an hour or more. Out of this material necessity, I mostly made friends with people who lived within a 10-15 bikeride from downtown. We would skateboard and smoke cigarettes and sneak out of our houses at night, the whole thing. And this was extremely important to me at the time. I think I have always had a social freedom streak within me and those conditions allowed themselves to express themselves to the highest degree. Making friends from a wide circle is something I really value in life, and that was a time where it could really manifest. 
+
+In college there was a generally similar trajectory. I was, on average, a decent student, with an upward trajectory as I figured adult life and academics out. I was quick to jump headfirst into any organizations that would have me, and thrived when I got accustomed to the system and was able to push against the boundaries of it. This theme presents itself constantly in my life, where I spend enough time in an environment to develop an intution of the rules and find ways to express and improve within that system. A liability is clear when I am in a short-term situation, like this program, where I don't have enough time to bake and find myself within it. 
+
+When I was a sophomore in highschool I convinced the administration to start a philosophy class but I was not able to take it because it conflicted with my AP courses. It was apparently a successful course. In college I fought tooth and nail to convince my mom to let me get a philosophy minor on the reasoning; this would be the only chance I ever get to be formally trained in a discipline like philosophy and I would kick myself forever if I didn't take that chance. Hands-down this was the best academic decision I have ever made.
+
+In general I've always been sensitive to group needs and building a sense of community among those around me, making connections between people and helping people relate to each other. I've also always been a bit of an argumentative guy. Not in the sense that I enjoy making people mad, but that I have a need to have in-depth dialogues about politics, philosophy, and the sort. In response to that strand of my life, I've also always made an effort to not be too intense with people and come off as abrasive, because it's easy to fall into that role for someone with my disposition. 
+
+### Present
+
+This leads me the present I've always tried to find balance between logical orders and symbolic orders. This is what I find to be most interesting about economics, since it operates on both qualitative and quantitative information, trying to bridge the gap between the two. I've seen economics papers that read like a hard math proof and others that are almost completely prose and both are equally valuable within the profession.
+
+By the same alignment of personality traits I've been increasingly self-consciously ideological and political in my lifetime. As a kid I was constantly pushing the bounds of arbitrary authority and getting in trouble. This morphed into a general understanding of my ability to work through contradictions and wax on and on in high school with my peers, through my philosophy minor. Into my participation in electoral politics since I came of age. Since 2016 I've been an active volunteer on local congressional and state-level campaigns, especially starting when my mom ran for office in 2018 as part of that wave.
+
+I'm taking a course in public opinion and voter behavior simultaneous to causal inference this semester. They seem like compliments to each other. One key unanswered question and common blind spot in matters of public opinion and public affairs is the question of which direction the causal arrow points when discussing matters of social and material movements. Political analysis is particularly interesting to me because there is a multitude of analytic cuts one can make on the basis of demography, geography, SES, and macro trends. The major lack I see in the discourse is a lack of clear analytic rigor when it comes to delivering Hot Takes Online.
+
+In general (in the pandemic), daily life is a mix of walking, playing music, twitter, reading, keeping up with friends, and getting work done. I cook fancy food occasionally but I would overall describe myself as a simple and routine-oriented person for the most part (a Taurus!). I definitely struggle with the issue of being online and getting work/reading done but I've been improving on that measure. I've also taken up the habit of doing the NYT Easy/Medium/Hard Sudoku and Mini Crossword every morning. I can usually get all three of them done in a half hour. 
+
+### Future
+
+Looking back at my life, I don't know if I could have predicted the trajectory of my life 10 or even 5 years ago, but at the same time there is definitely a hurricane-path that my life has taken. Whether it hits the coast at Miami or Jacksonville may be unknown, but there is definitely a proverbial Florida that my life is pointing, so far.
+
+In a year I would like to be working and paying down the debt I accrued when embarking on this program. I think the skills learned in data mining and causal inference will get me up to a salary level where I can do that in relatively short order. Ideally, I would like to work in publc policy and communications, doing something like what People's Policy Project or Roosevelt Institute does, but I'm not wedded to that since there is a bit of a vow of poverty one must take and I am quickly approaching my prime earning years. I'll either live in Austin or whatever city will take me, but I will only move back to DC if I get a really cool job. I've spent enough time in that region that I'd only go back if I have excellent career opportunities or need access to my family.
+
+In 5 years I would like to have been working at a job that I find fulfilling for at least two years. Ideally I'd have recently bought a "starter home" and buying up my equity as fast as possible. I'd either be some mid-level job with growth potential or forging off on my own in some capacity. I imagine by then I will have put down enough roots to have a wider network of friends and acquiantences than I do here in Austin. That's definitely the hardest part of this program, the total disconnection from everyone.
+
+In 10 years I have no idea. To think I would guess where I am now when I was 15 is insane. I suppose the general outline of it would be that I have some sort of respectable position and I am building a reputation for myself in whatever narrow field I end up in. At 35 I'd also hope I have a wife, 2.6 kids, a dog, 1.8 cars, a relatively nice suit I wear occasionally, etc.
+
+In general, I think the trendline I would put most of my effort into would be my writing. Right now, I write somewhere between an economist and a Poster, neither of which are good for clarity or brevity. I used to do comedic writing and could draw from that as part of my skillset I suppose. I'm fascinated by the process by which writing enters the public sphere and shapes the public will, and would like to participate in that process. I see so much drivel in the world and know I would produce the same, so it seems that would be the place where I could grow the most and corresponding goals would almost fall into place with discipline focused on that skillset. 
+
+A second factor is the question of whether I get into a PhD program, what field it is in, where it is, and what I intend to do with it. I'll probably always be somewhat attached to active progressive politics, so it's a matter of whether my talents are best applied making money in the private sector and using those means to donate and volunteer. The alternative is to get a job where the velocity-made-good (to use a sailing term) is more closely aligned with the little engine insde of me.
+
+## Part 2
+
+1. Data decisions affect (A) Real People
+2a. How is data science similar to and different from causal inference? Data science could be construed as an umbrella term that contains causal inference, since causal inference relies on data science skills but is a more narrowly-focused toolkit. Data science is the process of drawing meaning out of data, generally, while causal inference is the process of drawing causal relationships out of data. Both rely on statistical processes, analytic rigor, and storytelling.
+2b. A possible causal inference project would be to determine whether health outcomes improve after a drug is administered to a treatment group. A data science project is generating descriptive statistics and visuals for a population to give a picture of the world as it is.
+3. (B) ‘The quantitative analysis of large amounts of data for the purpose of decision-making.’
