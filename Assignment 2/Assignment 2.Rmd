@@ -66,7 +66,7 @@ Push - Lock your new files into Git
 
 #### 9. The first step in your new empirical workflow is the creation of a Github repository (“repo”). You can either do this independently or do this through R functionality.  You need to create a github account, then create your first repository called “Titanic”. Initialize with a Readme and create the separate folders that we discussed in class on Monday.
 
-
+Done within my CausInf repo
 
 #### 10. Post a link to your repository
 
