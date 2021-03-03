@@ -29,11 +29,6 @@ Recreating Figure 1 from Hansen. A histogram of BAC shows there is no
 visible evidence of bunching around either cutoff. Running the McCrary
 test finds no statistical evidence either.
 
-    ##                     male       white        age
-    ## estimate     0.006184234 0.005703740 -0.1404517
-    ## se           0.005703634 0.005008144  0.1643506
-    ## mean at .079 0.792009494 0.852588156 34.1780967
-
 <table class="kable_wrapper lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
 <tbody>
 <tr>
@@ -63,13 +58,13 @@ age
 estimate
 </td>
 <td style="text-align:right;">
-0.006
+0.0062
 </td>
 <td style="text-align:right;">
-0.006
+0.0057
 </td>
 <td style="text-align:right;">
--0.140
+-0.1405
 </td>
 </tr>
 <tr>
@@ -77,13 +72,13 @@ estimate
 se
 </td>
 <td style="text-align:right;">
-0.006
+0.0060
 </td>
 <td style="text-align:right;">
-0.005
+0.0050
 </td>
 <td style="text-align:right;">
-0.164
+0.1640
 </td>
 </tr>
 <tr>
@@ -91,13 +86,13 @@ se
 mean at .079
 </td>
 <td style="text-align:right;">
-0.790
+0.7900
 </td>
 <td style="text-align:right;">
-0.850
+0.8500
 </td>
 <td style="text-align:right;">
-34.180
+34.1800
 </td>
 </tr>
 </tbody>
@@ -129,13 +124,13 @@ age
 estimate
 </td>
 <td style="text-align:right;">
-0.000
+0.0003
 </td>
 <td style="text-align:right;">
-0.007
+0.0068
 </td>
 <td style="text-align:right;">
-0.115
+0.1152
 </td>
 </tr>
 <tr>
@@ -143,13 +138,13 @@ estimate
 se
 </td>
 <td style="text-align:right;">
-0.004
+0.0040
 </td>
 <td style="text-align:right;">
-0.004
+0.0040
 </td>
 <td style="text-align:right;">
-0.119
+0.1190
 </td>
 </tr>
 <tr>
@@ -157,13 +152,13 @@ se
 mean at .149
 </td>
 <td style="text-align:right;">
-0.790
+0.7900
 </td>
 <td style="text-align:right;">
-0.860
+0.8600
 </td>
 <td style="text-align:right;">
-34.500
+34.5000
 </td>
 </tr>
 </tbody>
@@ -173,7 +168,7 @@ mean at .149
 </tbody>
 </table>
 
-![](RDD-Replication-Markdown_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+<img src="RDD-Replication-Markdown_files/figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
 
     ##             V1           V2       V3
     ## 1 -0.024032531 -0.024032531 92.76366

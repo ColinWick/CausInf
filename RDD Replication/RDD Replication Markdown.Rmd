@@ -80,7 +80,6 @@ table_2_rep_08[3,] <- mydf %>%
 
 names(table_2_rep_08) <- c("male","white","age")
 row.names(table_2_rep_08) <- c("estimate","se","mean at .079")
-table_2_rep_08
 ```
 
 ```{r}
@@ -112,12 +111,12 @@ names(table_2_rep_15) <- c("male","white","age")
 row.names(table_2_rep_15) <- c("estimate","se","mean at .149")
 
 knitr::kables(
-  list(kbl(round(table_2_rep_08,c(3,3,2)),caption = "For BAC=.08"),
-       kbl(round(table_2_rep_15,c(3,3,2)),caption = "For BAC=.15"))) %>%
+  list(kbl(round(table_2_rep_08,c(4,3,2)),caption = "For BAC=.08"),
+       kbl(round(table_2_rep_15,c(4,3,2)),caption = "For BAC=.15"))) %>%
   kable_classic_2()
 ```
 
-```{r}
+```{r,fig.align='center',fig.width=9,fig.height=6}
 library(splines)
 library(matrixStats)
 
@@ -143,11 +142,13 @@ mydf %>%
 ```
 
 ```{r}
+head(mydf$bac2)
+
 mydf$sq_bac1 <- mydf$bac1^2
 
-f1 <- formula(recidivism ~ bac1 | bac_08 + white + aged + male)
+f1 <- formula(recidivism ~ bac1 | white + aged + male)
 f2 <- formula(recidivism ~ bac1 + bac_08 + bac1 * bac_08 | white + aged + male)
-f3 <- formula(recidivism ~ bac1 + sq_bac1 + sq_bac1*bac1 | white + aged + male)
+f3 <- formula(recidivism ~ bac1 + bac_08 + sq_bac1 | white + aged + male)
 
 
 estimates_.05_1 <- rdd::RDestimate(data=mydf,
@@ -170,9 +171,9 @@ estimates_.05_3 <- rdd::RDestimate(data=mydf,
 
 
 table_3 <- data.frame()
-#estimates_.05_1$est
-#estimates_.05_2$est
-#estimates_.05_3$est
+estimates_.05_1$est
+estimates_.05_2$est
+estimates_.05_3$est
 table_3[c(1:2),1] <- c(estimates_.05_1$est[1],estimates_.05_1$se[1])
 table_3[c(1:2),2] <- c(estimates_.05_2$est[1],estimates_.05_2$se[1])
 table_3[c(1:2),3] <- c(estimates_.05_3$est[1],estimates_.05_3$se[1])
