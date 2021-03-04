@@ -1,7 +1,7 @@
 ---
 title: "Assignment 2"
 author: "Colin Wick"
-date: "2/10/2021"
+date: "3/4/2021"
 output: github_document
 always_allow_html: true
 ---
@@ -34,14 +34,20 @@ Then, exploiting the underlying normality of BAC levels, he is able to analyze d
 
 He then does a handful of robustness checks and deeper looks into recidivism, finding the effect is strongest for those whom had never been tested and were caught above the .08 threshold but below the .15 threshold. 
 
+### Creating Cutoff Variables
+
 ```{r}
 mydf <- mydf %>%
   mutate(bac_08 = ifelse(bac1 >= .08,1,0),
          bac_15 = ifelse(bac1 >= .15,1,0))
+```
 
+### Testing for manipulation on the running variable
+
+```{r}
 mydf %>%
   ggplot()+
-  geom_histogram(aes(bac1),binwidth = .003,fill="light grey",color="grey")+
+  geom_histogram(aes(bac1),binwidth = .001,fill="light grey",color="grey")+
   geom_vline(xintercept = c(.08,.15),size=1)+
   theme_minimal()
 
@@ -51,6 +57,8 @@ print(paste("with P-value of McCrary tests",round(rdd_test08$test$p_jk,2),"and",
 ```
 
 Recreating Figure 1 from Hansen. A histogram of BAC shows there is no visible evidence of bunching around either cutoff. Running the McCrary test finds no statistical evidence either.
+
+### Coviariate Balance on the running variable
 
 ```{r}
 table_2_rep_08 <- data.frame()
@@ -141,41 +149,174 @@ mydf %>%
   facet_wrap(~ name, scales = 'free', nrow = 2)
 ```
 
-```{r}
-head(mydf$bac2)
+Both through formal tests and visually there do not appear to be manipulations of covariates around the cutoffs of the running variable. If there were, we would expect to see gaps in the continuity of these variables around the .08 cutoff. Rather, there are inflection points for some variables, but no significant gaps.
+
+### RDD Estimates
+
+```{r,fig.width=9}
+library("estimatr")
+
+mydf$wgt1 <- kernelwts(mydf$bac1,center = .08,bw = .5,kernel = "rectangular")
+mydf$wgt2 <- kernelwts(mydf$bac1,center = .08,bw = .25,kernel = "rectangular")
 
 mydf$sq_bac1 <- mydf$bac1^2
 
-f1 <- formula(recidivism ~ bac1 | white + aged + male)
-f2 <- formula(recidivism ~ bac1 + bac_08 + bac1 * bac_08 | white + aged + male)
-f3 <- formula(recidivism ~ bac1 + bac_08 + sq_bac1 | white + aged + male)
+f1 <- formula(recidivism ~ (I(bac1-.08)) + bac_08 + year + white + aged + male)
+f2 <- formula(recidivism ~ (I(bac1-.08)) * bac_08 + year + white + aged + male)
+f3 <- formula(recidivism ~ poly((I(bac1-.08)),2) * bac_08 + year + white + aged + male)
 
+####
+#
+# Estimates for .05 Bandwidth
+#
+####
 
-estimates_.05_1 <- rdd::RDestimate(data=mydf,
-                                   formula = f1,
-                                   cutpoint = .08,
-                                   kernel = "rectangular",
-                                   bw = .05)
+# RUNNING THE MODELS 
 
-estimates_.05_2 <- rdd::RDestimate(data=mydf,
-                                   formula = f2,
-                                   cutpoint = .08,
-                                   kernel = "rectangular",
-                                   bw = .05)
+estimates_.05_1 <- lm_robust(data=mydf,
+                             formula = f1,
+                             weights = wgt1,
+                             se_type = "stata",
+                             subset = wgt1 >0,
+                             clusters = bac_08)
 
-estimates_.05_3 <- rdd::RDestimate(data=mydf,
-                                   formula = f3,
-                                   cutpoint = .08,
-                                   kernel = "rectangular",
-                                   bw = .05)
+estimates_.05_2 <- lm_robust(data=mydf,
+                             formula = f2,
+                             weights = wgt1,
+                             se_type = "stata",
+                             subset = wgt1 >0,
+                             clusters = bac_08)
 
+estimates_.05_3 <- lm_robust(data=mydf,
+                             formula = f3,
+                             weights = wgt1,
+                             se_type = "stata",
+                             subset = wgt1 >0,
+                             clusters = bac_08)
+
+# STORE KEY ESTIMATES IN VECTORS
+
+est08_1 <- c(round(c(estimates_.05_1$coefficients["bac_08"],
+                     estimates_.05_1$std.error["bac_08"],
+                     mean(estimates_.05_1$fitted.values)),digits = 3),
+             as.character(estimates_.05_1$nobs))
+
+est08_2 <- c(round(c(estimates_.05_2$coefficients["bac_08"],
+                     estimates_.05_2$std.error["bac_08"],
+                     mean(estimates_.05_2$fitted.values)),digits = 3),
+             as.character(estimates_.05_2$nobs))
+
+est08_3 <- c(round(c(estimates_.05_3$coefficients["bac_08"],
+                     estimates_.05_3$std.error["bac_08"],
+                     mean(estimates_.05_3$fitted.values)),digits = 3),
+             as.character(estimates_.05_3$nobs))
 
 table_3 <- data.frame()
-estimates_.05_1$est
-estimates_.05_2$est
-estimates_.05_3$est
-table_3[c(1:2),1] <- c(estimates_.05_1$est[1],estimates_.05_1$se[1])
-table_3[c(1:2),2] <- c(estimates_.05_2$est[1],estimates_.05_2$se[1])
-table_3[c(1:2),3] <- c(estimates_.05_3$est[1],estimates_.05_3$se[1])
-table_3
+
+# CREATE TABLE WITH ALL ESTIMATES NICELY COMPILED
+
+table_3[c(1:4),c(1:3)] <- cbind(est08_1,est08_2,est08_3)
+row.names(table_3) <- c("DUI","SE, robust","Mean","N")
+colnames(table_3) <- c("Linear","Linear+Interaction","Quadratic+Interaction")
+
+####
+#
+# Estimates for .025 Bandwidth
+#
+####
+
+# RUN MODELS
+
+estimates_.025_1 <- lm_robust(data=mydf,
+                             formula = f1,
+                             weights = wgt2,
+                             se_type = "stata",
+                             subset = wgt2 >0,
+                             clusters = bac_08)
+
+estimates_.025_2 <- lm_robust(data=mydf,
+                             formula = f2,
+                             weights = wgt2,
+                             se_type = "stata",
+                             subset = wgt2 >0,
+                             clusters = bac_08)
+
+estimates_.025_3 <- lm_robust(data=mydf,
+                             formula = f3,
+                             weights = wgt2,
+                             se_type = "stata",
+                             subset = wgt2 >0,
+                             clusters = bac_08)
+
+# STORE ESTIMATES
+
+est08_4 <- c(round(c(estimates_.025_1$coefficients["bac_08"],
+                     estimates_.025_1$std.error["bac_08"],
+                     mean(estimates_.025_1$fitted.values)),digits = 3),
+             as.character(estimates_.025_1$nobs))
+
+est08_5 <- c(round(c(estimates_.025_2$coefficients["bac_08"],
+                     estimates_.025_2$std.error["bac_08"],
+                     mean(estimates_.025_2$fitted.values)),digits = 3),
+             as.character(estimates_.025_2$nobs))
+
+est08_6 <- c(round(c(estimates_.025_3$coefficients["bac_08"],
+                     estimates_.025_3$std.error["bac_08"],
+                     mean(estimates_.025_3$fitted.values)),digits = 3),
+             as.character(estimates_.025_3$nobs))
+
+table_4 <- data.frame()
+table_4[c(1:4),c(1:3)] <- cbind(est08_4,est08_5,est08_6)
+row.names(table_4) <- c("DUI","SE, robust","Mean","N")
+colnames(table_4) <- c("Linear","Linear+Interaction","Quadratic+Interaction")
+est_table <- rbind(table_3,table_4)
+
+kable(est_table,caption = "Regression Discontinuity Estimates for the Effect of Exceeding the .08 BAC Threshold on Recidivism") %>%
+  pack_rows(".05 BW, BAC in [0.03,0.13]", 1, 4) %>%
+  pack_rows(".025 BW, BAC in [0.055,0.105]", 5, 8) %>%
+  kableExtra::footnote("Showing estimates for the LATE around BAC=.08 with three specifications for increasing polynomial interactions with the running variable. Linear merely uses a cutoff dummy as the specification, while the following two interact the cutoff dummy with the running variable at power 1 and 2 respectively.") %>%
+  kable_classic_2()
+  
+``` 
+
+### Linear and Quadratic Fit Against the .15 cutoff
+
+```{r}
+mydf %>%
+  filter(bac1 < .15 & bac1 > .03) %>%
+  ggplot()+
+  stat_smooth(aes(bac1,recidivism,group=bac_08),
+              method=lm,
+              se=F,size=1.5,
+              color="navyblue")+
+  stat_smooth(aes(bac1,recidivism,group=bac_08),
+              method=lm,
+              se=F,size=1.5,formula = y~poly(x,2),
+              color="blueviolet")+
+  stat_summary_bin(aes(bac1,recidivism),
+                   geom = "point",
+                   fun = "mean",
+                   breaks = seq(0,.16,.002),
+                   size=3,alpha=.15)+
+  geom_vline(xintercept = .08,size=1.5,color="tomato")+
+  scale_y_continuous(breaks = seq(0,.16,.02))+
+  scale_x_continuous(breaks = seq(0,.15,.05))
 ```
+
+### Reflection
+
+Discuss what you learned from this exercise. What was the hypothesis you tested and what did you find?  How confident are you in Hansen’s original conclusion? Why/why not?
+
+This exercise taught lessons on two axis; coding and theory.
+
+In terms of causal inference (generally) and RDD design (in particular), this assignment put into clear focus the challenges that accompany distilling causal relationships from messy social information. In the first histogram, I immediately noticed the near-perfect distribution of BAC data, which was a crucial assumption for the entire empirical process to work. In the real world, finding variables like this is incredibly hard, especially if they are linked to other important variables. 
+
+Following this, the RDD design was important to work through on a practical level. From a theory perspective it is easy enough to understand, but feeling the process of testing covariates on the running variable testing possible bandwidths, and such were important to see. The workflow is crystal clear. For the RDD, I felt comfortable applying this to my semester project on the age variable in the ASEC and tinkering with the variable to get a sense of whether an RDD would be possible. My lingering concern is knowing what tests need to be performed and what magnitudes are valuable/publishable. This is partially a question of experience but this project presented a perfect dataset. 
+
+The hypothesis Hansen works with is whether the "arbitrary" cutoff of .08 BAC leads to a drop in recidivism. Since people do not have control over the specific value of their BAC, that variable is essentially random around the cutoff.
+
+Testing against a linear and quadratic line, Hansen sees whether there is a strong effect of breaching the .08 threshhold and finds a significant drop. There is strong evidence to suggest a precipitous drop (on average) if someone finds themselves "just over" the .08 BAC cutoff. This effect decreases as increasing polynomials are introduced into the model, which is consistent with theoretical understanding of the effects of polynomials in linear models.
+
+Overall, my takeaway from the paper is that there is some effect of deterrance from people experiencing consequences. One notable element is the upward slope of the inner line, suggesting that this deterrance effect decreases as BAC increases. A potential narrative that solves for this issue is the person who is "surprised" they got a DUI and changes their behavior accordingly. However, the effect is weaker (shallow drop) and less sticky (degrades over post-threshold BAC) to a concerning amount. The weakness carries an implication that deterrance is only really effective on the marginal drunk driver. Based on the demographic breakdowns of the BAC data, it is clear that the aggregate BAC data is composed of sub-populations with different drinking + driving propensity and it may be the case that this effect is not distributed evenly across the entire population (LATE is the average). 
+
+Along with the stickiness, it may be the case that, as BAC increases, the relative share of different underlying populations changes and contributes to the measure of recidivism. For example, BAC would be plausibly correlated with chronic alcoholism, so those populations would be higher represented in the higher BAC groups.
