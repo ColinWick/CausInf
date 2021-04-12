@@ -1,0 +1,6 @@
+---
+title: "Replication 2"
+author: "Colin Wick"
+date: "4/11/2021"
+output: github_document
+---
