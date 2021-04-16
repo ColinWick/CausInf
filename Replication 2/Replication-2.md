@@ -1,19 +1,32 @@
----
-title: "Replication 2"
-author: "Colin Wick"
-date: "4/11/2021"
-output: github_document
----
+Replication 2
+================
+Colin Wick
+4/11/2021
 
-```{r}
+``` r
 knitr::opts_chunk$set(warning = F,message = F)
 library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+
+    ## v ggplot2 3.3.3     v purrr   0.3.4
+    ## v tibble  3.0.6     v dplyr   1.0.4
+    ## v tidyr   1.1.2     v stringr 1.4.0
+    ## v readr   1.4.0     v forcats 0.5.1
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
 library(haven)
 library(ggthemes)
 ```
 
+    ## Warning: package 'ggthemes' was built under R version 4.0.5
 
-```{r}
+``` r
 read_data <- function(df)
 {
   full_path <- paste("https://raw.github.com/scunning1975/mixtape/master/", 
@@ -25,7 +38,7 @@ read_data <- function(df)
 nsw_dw <- read_data("nsw_mixtape.dta")
 ```
 
-```{r}
+``` r
 read_data <- function(df)
 {
   full_path <- paste("https://raw.github.com/scunning1975/mixtape/master/", 
@@ -45,19 +58,18 @@ nsw_dw_cpscontrol <- nsw_dw_cpscontrol %>%
          re74_cube = re74^3,
          re75_sq = re75^2,
          re75_cube = re75^3)
-
 ```
 
 Setting up the equations:
 
-```{r,echo=TRUE}
+``` r
 sq_formula <- formula(treat ~ age + age_sq + educ + educ_sq + black + hisp + marr + nodegree + re74 + re74_sq + re75 + re75_sq)
 cub_formula <- formula(treat ~ age + age_sq + age_cube + educ + educ_sq + educ_cube + black + hisp +marr + nodegree + re74 + re74_sq + re74_cube + re75 + re75_sq + re75_cube)
 ```
 
 Running each model and adding predicted values to the original dataset.
 
-```{r,echo=TRUE}
+``` r
 linear_pscore <- lm(data=nsw_dw_cpscontrol,formula=sq_formula)
 nsw_dw_cpscontrol$lin_sq_wt <- linear_pscore$fitted.values
 
@@ -75,9 +87,19 @@ nsw_dw_cpscontrol %>%
             avg = mean(value))
 ```
 
-Each of these approaches generate a relatively tight band of predicted weights. The highest range was the cubic logit weights.
+    ## # A tibble: 4 x 5
+    ## # Groups:   name [2]
+    ##   name         treat          min   max     avg
+    ##   <chr>        <dbl>        <dbl> <dbl>   <dbl>
+    ## 1 lin_sq_wt        0 -0.0403      0.142 0.0102 
+    ## 2 lin_sq_wt        1  0.00318     0.142 0.108  
+    ## 3 logit_tri_wt     0  0.000000321 0.546 0.00892
+    ## 4 logit_tri_wt     1  0.00159     0.532 0.216
 
-```{r}
+Each of these approaches generate a relatively tight band of predicted
+weights. The highest range was the cubic logit weights.
+
+``` r
 #colors <- c("lin_sq_wt1" = "steelblue4", "lin_sq_wt0" = "navy", "logit_tri_wt1" = "darkorange1", "logit_tri_wt0" = "tomato4")
 colors <- c("1"="tomato","0"="steelblue4")
 
@@ -97,9 +119,11 @@ nsw_dw_cpscontrol %>%
   ggthemes::theme_tufte(base_family = "sans",base_size = 12)
 ```
 
+![](Replication-2_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
 ## Dropping (.1,.9) bounds of propensity scores
 
-```{r}
+``` r
 nsw_dw_cpscontrol %>%
   filter(logit_tri_wt <= .9 & logit_tri_wt >= .1) %>%
   filter(lin_sq_wt <= .9 & lin_sq_wt >= .1) %>%
@@ -112,9 +136,19 @@ nsw_dw_cpscontrol %>%
             avg = mean(value))
 ```
 
-Each of these approaches generate a relatively tight band of predicted weights. The highest range was the cubic logit weights.
+    ## # A tibble: 4 x 5
+    ## # Groups:   name [2]
+    ##   name         treat   min   max   avg
+    ##   <chr>        <dbl> <dbl> <dbl> <dbl>
+    ## 1 lin_sq_wt        0 0.100 0.142 0.122
+    ## 2 lin_sq_wt        1 0.101 0.142 0.124
+    ## 3 logit_tri_wt     0 0.100 0.546 0.232
+    ## 4 logit_tri_wt     1 0.106 0.532 0.280
 
-```{r}
+Each of these approaches generate a relatively tight band of predicted
+weights. The highest range was the cubic logit weights.
+
+``` r
 #colors <- c("lin_sq_wt1" = "steelblue4", "lin_sq_wt0" = "navy", "logit_tri_wt1" = "darkorange1", "logit_tri_wt0" = "tomato4")
 colors <- c("1"="tomato","0"="steelblue4")
 
@@ -136,9 +170,11 @@ nsw_dw_cpscontrol %>%
   ggthemes::theme_tufte(base_family = "sans",base_size = 12)
 ```
 
+![](Replication-2_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
 ### First-differences for each unit
 
-```{r}
+``` r
 mean_y1 <- nsw_dw_cpscontrol %>%
   filter(treat == 1) %>%
   filter(logit_tri_wt > .1 & logit_tri_wt < .9) %>%
@@ -164,9 +200,12 @@ nsw_dw_cpscontrol %>%
   data.frame()
 ```
 
+    ##         y1       y0 weighted_first_diff basic_first_difference
+    ## 1 6126.545 5283.962            842.5834               1491.928
+
 ### Weighted Difference-in-differences
 
-```{r}
+``` r
 nsw_dw_cpscontrol = nsw_dw_cpscontrol %>%
   mutate(p_weight = 1/logit_tri_wt)
 
@@ -178,3 +217,5 @@ nsw_dw_cpscontrol %>%
             sd = sd(estimator)/sqrt(n())) %>% data.frame()
 ```
 
+    ##   estimator sd
+    ## 1  1121.123 NA
